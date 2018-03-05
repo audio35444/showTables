@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 const chalk = require('chalk');
 const fse = require('fs-extra');
 const path = require('path');
@@ -81,6 +82,12 @@ module.exports.jsonToPrettyTable = (objList,bgColor=defaultBGColor,charColor=def
 
 
 module.exports.jsonFileToPrettyTable = (filePath,bgColor=defaultBGColor,charColor=defaultCharColor, rows=process.stdout.rows) => {
+  if(!filePath || filePath.legnth<1){
+    filePath = process.title.split(/\s/);
+    filePath = filePath[filePath.length-1];
+  }
+  if(filePath.indexOf(process.cwd())) filePath = process.cwd()+path.sep+filePath;
+
   if(filePath && !filePath.match(/\/|\\/g))filePath = './'+filePath;
   console.log(filePath);
   if(!fse.pathExistsSync(filePath)) console.log('filePath is not Exists!!');
@@ -157,13 +164,5 @@ module.exports.jsonFileToPrettyTable = (filePath,bgColor=defaultBGColor,charColo
 if (require.main === module) {
   console.log('hola mundoooo');
   let argv = process.argv.slice(2).join();
-  if(!argv || argv.legnth<1){
-    argv = process.title.split(/\s/);
-    argv = argv[argv.length-1];
-  }
-  if(argv.indexOf(process.cwd())) argv = process.cwd()+path.sep+argv;
-  // console.log(process);
-  console.log(__dirname);
-  console.log(argv);
   this.jsonFileToPrettyTable(argv);
 }
